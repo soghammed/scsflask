@@ -57,17 +57,17 @@
         <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content bg-dark text-light">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Search recipes</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Search for recipes</h1>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form method="POST" action="">
                         <div class="form-group mb-2">
                             <label>Enter what you're looking for</label>
-                            <input class="form-control" type="text" placeholder="i.e I'm looking for arabic food" name="query" value="{{ query if query else ''}}"/>
+                            <input class="form-control" type="text" placeholder="i.e mango" name="query" value="{{ query if query else ''}}"/>
                         </div>
                         <div class="form-group mb-2">
-                            <label>Select your Dietary requirements here</label>
+                            <label>Select any dietary requirements</label>
                             <select name="diet[]" class="diet-select form-control" style="width:100%" multiple>
                                 {% for diet_info in diets %}
                                     <option value="{{diet_info.name}}" {{ 'selected' if diet_info.name in diet }}>{{diet_info.name}}</option>
@@ -84,7 +84,7 @@
                             </select>
                         </div>
         
-                        <input type="submit" class="shadow btn btn-warning">
+                        <input type="submit" value="Search" class="shadow btn btn-warning">
                     </form>
                 </div>
             </div>
@@ -132,7 +132,7 @@
 
                 </div>
 
-                <div>Showing {{recipes | length }} out of {{paginateData.total}}</div>
+                <div>Showing <span id="recipes-length">{{recipes | length }}</span> out of {{paginateData.total}}</div>
                 <div class="recipes-list">
                     {% for recipe in recipes %}
                     <div class="recipe" style="background-image: url('{{recipe.image}}')">

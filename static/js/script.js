@@ -6,16 +6,20 @@ $(document).ready( () => {
         dropdownParent: $('#inputModal')
     });
 
-    $('.corner-info').hover( (e) => {
-        // console.log('ere')
-        if($(e.target).hasClass('washovered')){
-            $(e.target).removeClass('washovered');
-        }
-    })
+    animateButton('.corner-info')
+    animateButton('.corner-search')
+    
 
-    $('.corner-info').mouseleave( (e) => {
-        $(e.target).addClass('washovered');
-    })
+    // $('.corner-info').hover( (e) => {
+    //     console.log('ere', e)
+    //     if($(e.currentTarget).hasClass('washovered')){
+    //         $(e.currentTarget).removeClass('washovered');
+    //     }
+    // })
+
+    // $('.corner-info').mouseleave( (e) => {
+    //     $(e.currentTarget).addClass('washovered');
+    // })
     
     //when reached bottom of page;
     // console.log(hasReachedBottom())
@@ -79,6 +83,8 @@ function getRecipes(){
                 `
                 recipesList.innerHTML += html;
             })
+            $('#recipes-length').html(res.paginateData.showing_total)
+
 
             console.log(res.paginateData.next_page);
             if(res.paginateData.next_page){
@@ -94,5 +100,18 @@ function getRecipes(){
             hideLoader();
             console.log(err)
         }
+    })
+}
+
+function animateButton(cls){
+    $(`${cls}`).hover( (e) => {
+        console.log('ere', e)
+        if($(e.currentTarget).hasClass('washovered')){
+            $(e.currentTarget).removeClass('washovered');
+        }
+    })
+
+    $(`${cls}`).mouseleave( (e) => {
+        $(e.currentTarget).addClass('washovered');
     })
 }

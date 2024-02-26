@@ -54,6 +54,7 @@ def index():
     
         paginateData = {
             "total": totalResults,
+            "showing_total": newOffset if newOffset <= jsonResponse['offset'] else jsonResponse['totalResults'],
             "next_page": f'{url}&offset={newOffset}' if hasNextPage else False
         }
         #if number + offset is < totalResults, then there is a next_url
@@ -111,6 +112,7 @@ def getRecipes():
 
     paginateData = {
         "total": totalResults,
+        "showing_total": newOffset if newOffset <= jsonResponse['offset'] else jsonResponse['totalResults'],
         "next_page": newUrl if hasNextPage else False
     }
 
