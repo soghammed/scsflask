@@ -93,7 +93,7 @@ function getRecipes(){
                 hasNextPage = false;
                 // $('#getRecipesButton').remove()
             }
-            window.scrollTo(0, document.body.scrollHeight);
+            // window.scrollTo(0, document.body.scrollHeight);
             hideLoader();
         },
         error: function(err){
