@@ -49,7 +49,7 @@ def index():
             return render_template(
                 'index.html',
                 error={
-                    "message": 'daily quota exceeded, please try again after midnight'
+                    "message": 'Sorry.. free daily quota from Spoonacular API (150 requests) exceeded, please try again after midnight'
                 }
             )
         print(response.status_code)
