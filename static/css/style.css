@@ -8,7 +8,7 @@ body{
 .corner-info, .corner-search{
     position:fixed;
     bottom:20px;
-    left:40px;
+    left:20px;
     cursor: pointer;
     /* color:maroon; */
     /* color:rgb(21, 21, 21); */
@@ -31,17 +31,11 @@ body{
     font-size:1.7em;
     bottom:90px;
     /* color:rgb(21, 21, 21); */
-    left:40px;
+    left:20px;
 }
 .corner-info{
     font-size: 3em;
 }
-@media only screen and (max-width: 500px) {
-    .corner-info, .corner-search{
-        left:20px;
-    }
-}
-
 .corner-info:hover, .corner-search:hover{
     background-color: rgb(255, 231, 96);
     transform: rotate(360deg);
