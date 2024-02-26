@@ -5,6 +5,13 @@ body{
     font-family: "Playfair Display", serif;
     color:white;
 }
+.alert{
+    background-color: #2d2d2d;
+    border: none;
+    color: white;
+    border-left: 4px solid red;
+    border-radius: 0;
+}
 .corner-info, .corner-search{
     position:fixed;
     bottom:20px;
