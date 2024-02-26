@@ -22,6 +22,25 @@ body{
     font-size:3em;
     border-radius: 50%;
 }
+.corner-search{
+    /* width:50px;
+    height:50px;
+    text-align: center;
+    font-size:2em;
+    border-radius: 50%; */
+    font-size:1.7em;
+    bottom:90px;
+    /* color:rgb(21, 21, 21); */
+    left:40px;
+}
+.corner-info{
+    font-size: 3em;
+}
+@media only screen and (max-width: 500px) {
+    .corner-info, .corner-search{
+        left:20px;
+    }
+}
 
 .corner-info:hover, .corner-search:hover{
     background-color: rgb(255, 231, 96);
@@ -47,20 +66,6 @@ body{
     to {rotate: 0deg;}
 } */
 
-.corner-search{
-    /* width:50px;
-    height:50px;
-    text-align: center;
-    font-size:2em;
-    border-radius: 50%; */
-    font-size:1.7em;
-    bottom:90px;
-    /* color:rgb(21, 21, 21); */
-    left:40px;
-}
-.corner-info{
-    font-size: 3em;
-}
 .recipe{
     display:flex;
     flex-direction: column-reverse;
