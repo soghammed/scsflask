@@ -98,7 +98,7 @@ function getRecipes(){
         },
         error: function(err){
             hideLoader();
-            console.log(err)
+            console.log('err', err)
         }
     })
 }

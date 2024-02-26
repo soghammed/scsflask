@@ -24,7 +24,6 @@ with open('intolerances.json') as intoleranceJsonFile:
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
-
     if request.method == 'POST':
         diet = request.form.getlist('diet[]')
         intoleranceList = request.form.getlist('intolerance[]')
@@ -46,6 +45,14 @@ def index():
         #run api call here;
         response = requests.get(url)
         responseStatus = response.status_code
+        if responseStatus == 402:
+            return render_template(
+                'index.html',
+                error={
+                    "message": 'daily quota exceeded, please try again after midnight'
+                }
+            )
+        print(response.status_code)
         jsonResponse = response.json()
         recipes = jsonResponse['results']
         totalResults = jsonResponse['totalResults']
@@ -58,7 +65,6 @@ def index():
             "next_page": f'{url}&offset={newOffset}' if hasNextPage else False
         }
         #if number + offset is < totalResults, then there is a next_url
-        print(paginateData)
         
         return render_template(
             'index.html',

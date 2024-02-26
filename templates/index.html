@@ -150,6 +150,12 @@
                     <input type="hidden" id="getRecipesUrl" data-url="{{paginateData.next_page}}"/>
                 {% endif %}
 
+            {% elif error %}
+                <div class="col-md-6 offset-md-3 mt-4 justify-content-center text-center">
+                    <div class="alert alert-danger text-capitalize">{{error.message}}</div>
+                    <!-- <img style="width:100%; max-width:500px;" src="{{ url_for('static', filename='images/board.png') }}"/> -->
+                    <!-- <div class="fs-1 text-light text-center">No Recipes to show</div> -->
+                </div>
             {% else %}
                 <div class="col-12 justify-content-center text-center">
                     <img style="width:100%; max-width:500px;" src="{{ url_for('static', filename='images/board.png') }}"/>
