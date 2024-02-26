@@ -1,0 +1,164 @@
+body{
+    background-color:rgba(0,0,0,0.9);
+    /* background-color:#2d2d2d; */
+    color:white;
+}
+.corner-info, .corner-search{
+    position:fixed;
+    bottom:20px;
+    left:40px;
+    cursor: pointer;
+    /* color:maroon; */
+    /* color:rgb(21, 21, 21); */
+    color:white;
+    background-color: maroon;
+    transition: all .3s;
+    width:50px;
+    height:50px;
+    line-height: 50px;
+    text-align: center;
+    font-size:3em;
+    border-radius: 50%;
+}
+.corner-info.washovered,.corner-search.washovered{
+    animation: spinout .3s linear 1;
+    /* transition: all; */
+    scale: 1;
+}
+.corner-info:hover, .corner-search:hover{
+    animation: spinin .3s linear 1;
+    scale: 1.5;
+}
+.corner-search{
+    /* width:50px;
+    height:50px;
+    text-align: center;
+    font-size:2em;
+    border-radius: 50%; */
+    font-size:2em;
+    bottom:100px;
+    /* color:rgb(21, 21, 21); */
+    background-color: maroon;
+    left:40px;
+}
+.corner-info{
+    font-size: 3em;
+}
+.recipe{
+    display:flex;
+    flex-direction: column-reverse;
+    min-height:400px;
+    /* max-width:300px; */
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+.recipe img{
+    /* border-radius:10px; */
+    /* max-width: 400px;; */
+}
+.recipe .title-container{
+    /* border: 1px solid red; */
+    padding:20px;
+    background-image: linear-gradient(to bottom, rgba(255,255,255,0) 0%, black 70%);
+    text-align: center;
+}
+.recipe .title{
+    color:white;
+    font-weight:bold;
+    font-size:1.5em;
+    text-shadow: 1px 2px 2px #000000;;
+}
+.recipes-list{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+}
+@keyframes spinin {
+    from {rotate: 0deg}
+    to {rotate: 360deg;}
+}
+
+@keyframes spinout {
+    from {rotate: 360deg}
+    to {rotate: 0deg;}
+}
+
+@media only screen and (max-width: 769px) {
+    .recipes-list{
+        display:grid;
+        grid-template-columns: 1fr;
+    }
+}
+  
+.accordion-button:after {
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") !important;
+}
+.btn-close{
+    color:white;
+}
+.form-control{
+    background-color: #2d2d2d;
+    color:white;
+}
+.form-control:hover{
+    background-color: #2d2d2d;
+    color:white;
+}
+::placeholder {
+    color:white;
+
+}
+.form-control::-webkit-input-placeholder {
+    color:white;
+}
+::-ms-input-placeholder { /* Edge 12 -18 */
+    color: white;
+  }
+.form-control::placholder{
+}  
+.select2-container--default .select2-selection--multiple{
+    background-color: #2d2d2d;
+    color:white;
+}
+.select2-container--default .select2-search--inline .select2-search__field{
+    color:white;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice{
+    background-color: gold;
+    color:black;
+}
+.select2-container--default .select2-results>.select2-results__options{
+    background-color:#2d2d2d;
+    color:white;
+}
+.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable{
+    background-color: gold;
+    color:black;
+}
+.select2-container--default .select2-results__option--selected{
+    color:black;
+}
+.accordion-button:focus{
+    box-shadow:none;
+}
+.modal-header{
+    border-bottom: none;
+}
+
+/* . */
+.loader{
+    display:none;
+    position: fixed;
+    background-color: #2d2d2d;
+    /* height:50px; */
+    top:50%;
+    left:50%;
+    /* width:50px; */
+    border-radius: 50%;
+    transform: translate(-50%,-50%);
+}
+.loader .card-body{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
