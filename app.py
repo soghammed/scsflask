@@ -48,6 +48,10 @@ def index():
         if responseStatus == 402:
             return render_template(
                 'index.html',
+                diets=diets,
+                diet=diet,
+                intoleranceList=intoleranceList,
+                intoleranceOptions=intoleranceOptions,
                 error={
                     "message": 'Sorry.. free daily quota from Spoonacular API (150 requests) exceeded, please try again after midnight'
                 }
