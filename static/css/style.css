@@ -5,6 +5,26 @@ body{
     font-family: "Playfair Display", serif;
     color:white;
 }
+.foodImg{
+    position: fixed;
+    background-size: contain;
+    background-position: center center;
+    filter:blur(15px);
+    z-index:-1;
+    height:100%;
+    width:100%;
+}
+/* .foodImg{
+    position: fixed;
+    max-width:500px;
+    max-height:500px;
+    z-index: -1;
+    filter: blur(4px);
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+
+} */
 .alert{
     background-color: #2d2d2d;
     border: none;
@@ -90,7 +110,7 @@ body{
     color:white;
     font-weight:900;
     font-size:1.5em;
-    text-shadow: 1px 2px 2px #000000;;
+    text-shadow: 1px 2px 2px #000000;
 }
 .recipes-list{
     display:grid;
