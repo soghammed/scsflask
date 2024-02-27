@@ -6,7 +6,9 @@ import re
 app = Flask(__name__)
 spoonacular_api_base_url = 'https://api.spoonacular.com/'
 spoonacular_complex_search_endpoint = 'recipes/complexSearch'
-spoonacular_api_key = '5a83ebe6c5d744a9938a06ee1ab8a8ac'
+# spoonacular_api_key = '5a83ebe6c5d744a9938a06ee1ab8a8ac'
+#spoonacular_api_key = 'a4c16ba3750e41b09919095fde43c1ee'
+spoonacular_api_key = '03dff108052c4b8b844798850217b65f'
 
 #diets file
 with open('diets.json') as dietJsonFile:
@@ -65,7 +67,7 @@ def index():
     
         paginateData = {
             "total": totalResults,
-            "showing_total": newOffset if newOffset <= jsonResponse['offset'] else jsonResponse['totalResults'],
+            "showing_total": newOffset if newOffset <= jsonResponse['totalResults'] else jsonResponse['totalResults'],
             "next_page": f'{url}&offset={newOffset}' if hasNextPage else False
         }
         #if number + offset is < totalResults, then there is a next_url
@@ -122,7 +124,7 @@ def getRecipes():
 
     paginateData = {
         "total": totalResults,
-        "showing_total": newOffset if newOffset <= jsonResponse['offset'] else jsonResponse['totalResults'],
+        "showing_total": newOffset if newOffset <= jsonResponse['totalResults'] else jsonResponse['totalResults'],
         "next_page": newUrl if hasNextPage else False
     }
 

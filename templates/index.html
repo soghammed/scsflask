@@ -151,6 +151,9 @@
                         // nextPageUrl = paginateData.next_page;
                     </script>
                     <input type="hidden" id="getRecipesUrl" data-url="{{paginateData.next_page}}"/>
+                    <div class="text-center mt-3 mb-3">
+                        <div class="btn btn-warning" id="getRecipesButton">Load More Recipes</div>
+                    </div>
                 {% endif %}
 
             {% elif error %}
