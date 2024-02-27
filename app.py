@@ -18,23 +18,26 @@ with open('diets.json') as dietJsonFile:
 with open('intolerances.json') as intoleranceJsonFile:
     intoleranceOptions = json.load(intoleranceJsonFile)
 
-#recipes file (temporary)
-# with open('recipes.json') as recipeJsonFile:
-#     recipes = json.load(recipeJsonFile)
     
 
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
+    #if http request is POST
     if request.method == 'POST':
+        #get form data
         diet = request.form.getlist('diet[]')
         intoleranceList = request.form.getlist('intolerance[]')
+        query = request.form['query']
+
+        #turn list into string
         intoleranceString = ','.join(intoleranceList)
         dietString = ','.join(diet)
-        query = request.form['query']
-        url = spoonacular_api_base_url + spoonacular_complex_search_endpoint + f'?apiKey={spoonacular_api_key}'
 
-        #add get params
+        #create the url with api key
+        url = spoonacular_api_base_url + spoonacular_complex_search_endpoint + f'?apiKey={spoonacular_api_key}&number=100'
+
+        #add form data to url if exists
         if query:
             url += f'&query={query}'
 
@@ -44,9 +47,13 @@ def index():
         if intoleranceString:
             url += f'&intolerance={intoleranceString}'
 
-        #run api call here;
+        #call spoonacgular api;
         response = requests.get(url)
+
+        #store api call response http status code
         responseStatus = response.status_code
+
+        #if api called failed (allowed requests exceeded) return error to front end
         if responseStatus == 402:
             return render_template(
                 'index.html',
@@ -58,20 +65,30 @@ def index():
                     "message": 'Sorry.. free daily quota from Spoonacular API (150 requests) exceeded, please try again after midnight'
                 }
             )
-        print(response.status_code)
+
+        #api call is successful, store api response as json
         jsonResponse = response.json()
+
+        #store recipes from the api response in variable
         recipes = jsonResponse['results']
+
+        #store total Recieps count in variable
         totalResults = jsonResponse['totalResults']
+
+        #calculate the next pages recipe offset since api only returns 10 at a time 
         newOffset = (jsonResponse['number'] + jsonResponse['offset'])
+
+        #detect if has next page based on newOffset and totalRecipes available
         hasNextPage = newOffset < totalResults
     
+        #store pagination data into object, for front end to access
         paginateData = {
             "total": totalResults,
             "showing_total": newOffset if newOffset <= jsonResponse['totalResults'] else jsonResponse['totalResults'],
             "next_page": f'{url}&offset={newOffset}' if hasNextPage else False
         }
-        #if number + offset is < totalResults, then there is a next_url
         
+        #return html with all the above data
         return render_template(
             'index.html',
             query=query,
@@ -83,20 +100,22 @@ def index():
             status=responseStatus,
             intoleranceOptions=intoleranceOptions
         )
-
-
     else:
+        #http request is GET
+
+        #get the previously selected form data;
         diet = request.args.get('diet[]')
+        intoleranceList = request.args.get('intolerance[]')
+        query = request.args.get('query')
+
+        #if nothing selected, set variables to empty list
         if diet is None:
             diet = []
 
-        intoleranceList = request.args.get('intolerance[]')
         if intoleranceList is None:
             intoleranceList = []
 
-        query = request.args.get('query')
-
-
+    #return html with above data
     return render_template(
         'index.html',
         diet=diet,
@@ -108,26 +127,44 @@ def index():
     )
 
 
+#route for ajax call
 @app.route('/get_recipes', methods=['POST'])
 def getRecipes():
-
+    #set the api request url
     url = request.form['url']
-    response = requests.get(url)
-    responseStatus = response.status_code
-    jsonResponse = response.json()
-    recipes = jsonResponse['results']
-    totalResults = jsonResponse['totalResults']
-    newOffset = (jsonResponse['number'] + jsonResponse['offset'])
-    hasNextPage = newOffset < totalResults
-    newUrl = re.sub('(offset=\d*)', f'offset={newOffset}', url)
-    print(newUrl)
 
+    #call spoonacular api
+    response = requests.get(url)
+
+    #store api response status code
+    responseStatus = response.status_code
+
+    #store api response as json
+    jsonResponse = response.json()
+
+    #store recipes response from api
+    recipes = jsonResponse['results']
+
+    #store total count of recipes
+    totalResults = jsonResponse['totalResults']
+
+    #calculate newOffset for next page of data
+    newOffset = (jsonResponse['number'] + jsonResponse['offset'])
+
+    #detect if has next page based on newOffset and totalRecipes available
+    hasNextPage = newOffset < totalResults
+
+    #replace old offset in url with new offset
+    newUrl = re.sub('(offset=\d*)', f'offset={newOffset}', url)
+
+    #set pagination data into dictonary
     paginateData = {
         "total": totalResults,
         "showing_total": newOffset if newOffset <= jsonResponse['totalResults'] else jsonResponse['totalResults'],
         "next_page": newUrl if hasNextPage else False
     }
 
+    #return data as dictionary to js
     return {
         "data": recipes,
         "status": responseStatus,
@@ -135,5 +172,6 @@ def getRecipes():
     }
 
 
+#run the app
 if __name__ == '__main__':
     app.run(debug=True)

@@ -14,9 +14,14 @@
 </head>
 <body>
 
-    <div class="foodImg" style="background-image:url('{{url_for("static", filename="images/food.png")}}')"></div>
+    <div 
+        class="foodImg" 
+        style="
+            background-image: url(' {{url_for("static", filename="images/food.png")}} ')
+        ">
+    
+    </div>
 
-    <!-- <img src="{{url_for('static', filename="images/food.png")}}" class="foodImg"/> -->
     <!-- modal button -->
     <div class="corner-info shadow-lg">
         <i class="bi bi-info" data-bs-toggle="modal" data-bs-target="#dietModal"></i>
