@@ -6,6 +6,7 @@ import re
 app = Flask(__name__)
 spoonacular_api_base_url = 'https://api.spoonacular.com/'
 spoonacular_complex_search_endpoint = 'recipes/complexSearch'
+spoonacular_recipe_summary = 'summary'
 # spoonacular_api_key = '5a83ebe6c5d744a9938a06ee1ab8a8ac'
 #spoonacular_api_key = 'a4c16ba3750e41b09919095fde43c1ee'
 spoonacular_api_key = '03dff108052c4b8b844798850217b65f'
@@ -18,6 +19,9 @@ with open('diets.json') as dietJsonFile:
 with open('intolerances.json') as intoleranceJsonFile:
     intoleranceOptions = json.load(intoleranceJsonFile)
 
+#recipes
+# with open('recipes.json') as recipesFile:
+#     recipes = json.load(recipesFile)
     
 
 
@@ -47,7 +51,7 @@ def index():
         if intoleranceString:
             url += f'&intolerance={intoleranceString}'
 
-        #call spoonacgular api;
+        #call spoonacular api;
         response = requests.get(url)
 
         #store api call response http status code
@@ -171,6 +175,32 @@ def getRecipes():
         "paginateData": paginateData
     }
 
+#route for recipe summary
+@app.route('/get_recipe_summary', methods=['POST'])
+def getRecipeSummary():
+
+    recipe_id = request.form['recipe_id']
+    url = spoonacular_api_base_url + f'recipes/{recipe_id}/' + spoonacular_recipe_summary + f'?apiKey={spoonacular_api_key}'
+    #call spoonacular api
+    response = requests.get(url)
+
+    #store api response status code
+    responseStatus = response.status_code
+
+    if responseStatus == 402:
+        return {
+            "message": 'Sorry.. free daily quota from Spoonacular API (150 requests) exceeded, please try again after midnight'
+        }
+
+    #store api response as json
+    jsonResponse = response.json()
+
+    #store recipes response from api
+    summary = jsonResponse['summary']
+
+    return {
+        "recipe_summary": summary
+    }
 
 #run the app
 if __name__ == '__main__':

@@ -18,6 +18,7 @@ $(document).ready( () => {
             getRecipes();
         }
     })
+
 })
 
 //used to show loading spinner
@@ -30,7 +31,7 @@ function hideLoader(){
     $('.loader').hide();
 }
 
-//used to run ajax call to endpoint which calls spoonacular to get more recipes (without page refresh)
+//used to run ajax call to flask endpoint which calls spoonacular to get more recipes (without page refresh)
 function getRecipes(){
 
     //show loading spinner
@@ -82,6 +83,33 @@ function getRecipes(){
                 $('#getRecipesButton').remove()
 
             }
+
+            //hide loading spinner
+            hideLoader();
+        },
+        error: function(err){
+            //hide loading spinner
+            hideLoader();
+        }
+    })
+}
+
+//used to run ajax call to flask endpoint which calls spoonacular to get summary of given recipe
+function getRecipeSummary(recipe){
+    $('#summaryModal').modal('hide');
+    showLoader();
+
+    //run ajax call
+    $.ajax({
+        url: `/get_recipe_summary`,
+        method: "POST",
+        dataType: 'JSON',
+        data: {recipe_id: recipe.id},
+        success: function(res){
+
+            $('#recipe-summary').html(res.recipe_summary);
+            $('#recipe-title').html(`Summary For ${recipe.title} Recipe`);
+            $('#summaryModal').modal('show');
 
             //hide loading spinner
             hideLoader();

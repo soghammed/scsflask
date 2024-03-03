@@ -1,7 +1,7 @@
 [
     {
-    "name": "Gluten Free",
-    "desc": "Eliminating gluten means avoiding wheat, barley, rye, and other gluten-containing grains and foods made from them (or that may have been cross contaminated)."
+        "name": "Gluten Free",
+        "desc": "Eliminating gluten means avoiding wheat, barley, rye, and other gluten-containing grains and foods made from them (or that may have been cross contaminated)."
     },
     {
         "name": "Ketogenic",
