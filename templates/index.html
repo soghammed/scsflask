@@ -144,6 +144,8 @@
             <!-- check if recipes exist -->
             {% if recipes | length >= 1 %}
                 <div class="fs-3 mb-4">
+
+                    <!-- Add text to indicate what recipes are being displayed on screen based on search form user input -->
                     <span>Viewing Recipes for:</span>
                     {% if query %}
                         <span class="fst-italic fw-bold">{{ query }}</span>
@@ -171,8 +173,10 @@
 
                 </div>
 
+                <!-- indicate how many recipes are showing in total on current page / out of total amount -->
                 <div>Showing <span id="recipes-length">{{recipes | length }}</span> out of {{paginateData.total}}</div>
-                <!-- recipes list -->
+
+                <!-- loop through recipes list and display each recipe -->
                 <div class="recipes-list">
                     {% for recipe in recipes %}
                     <div class="recipe" style="background-image: url('{{recipe.image}}')" onclick="getRecipeSummary({{recipe}})">
@@ -182,6 +186,8 @@
                     </div>
                     {% endfor %}
                 </div>
+
+                <!-- if there is a next page then show the load more recipes button -->
                 {% if paginateData and paginateData.next_page %}
                     <script> 
                         hasNextPage = true;
@@ -194,10 +200,12 @@
                 {% endif %}
 
             {% elif error %}
+                <!-- if there is an error then display the error message -->
                 <div class="col-md-6 offset-md-3 mt-4 justify-content-center text-center">
                     <div class="alert alert-danger shadow-lg fs-3">{{error.message}}</div>
                 </div>
             {% else %}
+                <!-- if there are no recipes to show then display the no recipes message -->
                 <div class="col-12 justify-content-center text-center">
                     <img style="width:100%; max-width:500px;" src="{{ url_for('static', filename='images/board.png') }}"/>
                     <div class="fs-1 text-light text-center text-capitalize" style="text-shadow: 1px 2px 2px #000000">No recipes to show</div>
