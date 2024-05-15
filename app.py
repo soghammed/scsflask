@@ -1,63 +1,61 @@
-from flask import Flask, render_template, request
-import requests
-import json
-import re
+from flask import Flask, render_template, request #import flask library
+import requests #  import requests library
+import json #   import json library
+import re # import re library
 
-app = Flask(__name__)
-spoonacular_api_base_url = 'https://api.spoonacular.com/'
-spoonacular_complex_search_endpoint = 'recipes/complexSearch'
-spoonacular_recipe_summary = 'summary'
+app = Flask(__name__) #create a flask app
+spoonacular_api_base_url = 'https://api.spoonacular.com/' #spoonacular api base url
+spoonacular_complex_search_endpoint = 'recipes/complexSearch' # endpoint for complex search
+spoonacular_recipe_summary = 'summary' # endpoint for recipe summary
 # spoonacular_api_key = '5a83ebe6c5d744a9938a06ee1ab8a8ac'
 #spoonacular_api_key = 'a4c16ba3750e41b09919095fde43c1ee'
 spoonacular_api_key = '03dff108052c4b8b844798850217b65f'
 
-#diets file
+# open diets.json file and store it in diets variable to access in front end
 with open('diets.json') as dietJsonFile:
     diets = json.load(dietJsonFile)
 
-#intolerance
+# open intolerances.json file and store it in intoleranceOptions variable to access in front end
 with open('intolerances.json') as intoleranceJsonFile:
     intoleranceOptions = json.load(intoleranceJsonFile)
 
-#recipes
-# with open('recipes.json') as recipesFile:
-#     recipes = json.load(recipesFile)
-    
-
-
+#route for home page
 @app.route('/', methods=['POST', 'GET'])
 def index():
-    #if http request is POST
+    #if user submits the search form (handle POST request)
     if request.method == 'POST':
-        #get form data
+        
+        #get the form data, diet, intolerance and query
         diet = request.form.getlist('diet[]')
         intoleranceList = request.form.getlist('intolerance[]')
         query = request.form['query']
 
-        #turn list into string
+        #convert list to string
         intoleranceString = ','.join(intoleranceList)
         dietString = ','.join(diet)
 
-        #create the url with api key
+        #create the url with api key and number of recipes to return (100)
         url = spoonacular_api_base_url + spoonacular_complex_search_endpoint + f'?apiKey={spoonacular_api_key}&number=100'
 
-        #add form data to url if exists
+        #if user has selected diet, add it to the url
         if query:
             url += f'&query={query}'
 
+        #if user has selected diet, add it to the url
         if diet:
             url += f'&diet={dietString}'
 
+        #if user has selected intolerance, add it to the url
         if intoleranceString:
             url += f'&intolerance={intoleranceString}'
 
-        #call spoonacular api;
+        #call spoonacular api
         response = requests.get(url)
 
-        #store api call response http status code
+        #store api response status code
         responseStatus = response.status_code
 
-        #if api called failed (allowed requests exceeded) return error to front end
+        #if api response status is 402, return html with error message
         if responseStatus == 402:
             return render_template(
                 'index.html',
@@ -107,19 +105,19 @@ def index():
     else:
         #http request is GET
 
-        #get the previously selected form data;
+        #get the query parameters from the url
         diet = request.args.get('diet[]')
         intoleranceList = request.args.get('intolerance[]')
         query = request.args.get('query')
 
-        #if nothing selected, set variables to empty list
+        #if diet or intoleranceList is None, set it to empty list
         if diet is None:
             diet = []
 
         if intoleranceList is None:
             intoleranceList = []
 
-    #return html with above data
+    #return html with all the above data
     return render_template(
         'index.html',
         diet=diet,
@@ -131,7 +129,7 @@ def index():
     )
 
 
-#route for ajax call
+#route for getting recipes based on pagination
 @app.route('/get_recipes', methods=['POST'])
 def getRecipes():
     #set the api request url
@@ -175,12 +173,15 @@ def getRecipes():
         "paginateData": paginateData
     }
 
-#route for recipe summary
+#route for getting recipe summary
 @app.route('/get_recipe_summary', methods=['POST'])
 def getRecipeSummary():
-
+    #get the recipe id from the form data
     recipe_id = request.form['recipe_id']
+
+    #set the api request url
     url = spoonacular_api_base_url + f'recipes/{recipe_id}/' + spoonacular_recipe_summary + f'?apiKey={spoonacular_api_key}'
+    
     #call spoonacular api
     response = requests.get(url)
 
